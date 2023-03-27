@@ -1,25 +1,46 @@
 <?php
 include("includes/config.php");
 include("includes/db.php");
-include("includes/header.php")
+
+if(isset($_GET['category'])) {
+    $category = mysqli_real_escape_string($db, $_GET['category']);
+    $cat = $db->query("SELECT * FROM categories WHERE id='$category'");
+    $c = $cat->fetch_assoc();
+
+    $page_title = $c['text']." Posts";
+
+}
+
+include("includes/header.php");
+if(isset($_GET['category'])) {
+    $category = mysqli_real_escape_string($db, $_GET['category']);
+    $query = "SELECT * FROM posts WHERE category='$category'";
+}else{
+    $query = "SELECT * FROM posts";
+}
+
+
+$posts = $db -> query($query);
+
+if($posts -> num_rows > 0) {
+    while($row = $posts->fetch_assoc()) {
+
 ?>
 
-            <h1>1: Anatomy & Physiology</h1>
-            <p>A competent optician requires</p>
-            <ul>
-                <li>basic understanding of the anatomy of the human eye</li>
-                <li>how it works</li>
-                <li>what conditions or vision abnormalities might occur</li>
-            </ul>
-            <p>With this knowledge he may interact more confidently with both patients and the prescribing practitioner as well</p>
-            <p>How do spectacle lenses have the ability to correct conditions</p>
-            <ul>
-                <li>nearsightedness (myopia) - you can see objects clearly, but objects farther away look blurry.</li>
-                <li>farsightedness (hyperopia) - objects in the distance look clear, while things close by look blurry.</li>
-                <li>astigmatism - a problem with the shape of your cornea (or lens) causes blurry or distorted vision.</li>
-                <li>presbyopia - your eyes begin to lose the ability to focus on nearby objects (an age related condition).</li>
-            </ul>
+    <h1><a href="single.php?post=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h1>
+    <small><?php echo $row['date']. " by <a href='#'>". $row['author']."</a>"; ?></small>
+    <?php 
+    $body = $row['body']; 
 
+    echo substr(strip_tags($body), 0, 400). "...";
+    ?>
+        <a href="single.php?post=<?php echo $row['id']; ?>" class="btn btn-primary">Read More</a>
+<?php
+    }
+} else {
+    echo "<p>No Matching Posts</p>";
+}
+?>
 <?php
 include("includes/footer.php");
 ?>

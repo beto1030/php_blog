@@ -8,5 +8,5 @@ if ($db->connect_error) {
     exit();
 }
 /* close connection */
-$db->close();
+//$db->close();
 ?>
