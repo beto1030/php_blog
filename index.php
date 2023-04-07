@@ -27,14 +27,16 @@ if($posts -> num_rows > 0) {
 
 ?>
 
-    <h1><a href="single.php?post=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h1>
-    <small><?php echo $row['date']. " by <a href='#'>". $row['author']."</a>"; ?></small>
-    <?php 
-    $body = $row['body']; 
-
-    echo substr(strip_tags($body), 0, 400). "...";
-    ?>
-        <a href="single.php?post=<?php echo $row['id']; ?>" class="btn btn-primary">Read More</a>
+    <div class="container">
+        <h1><a href="single.php?post=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h1>
+        <small><?php echo $row['date']. " by <a href='#'>". $row['author']."</a>"; ?></small>
+        <?php 
+        $body = $row['body']; 
+        
+        echo "<section>".substr(strip_tags($body), 0, 400). "...</section>";
+        ?>
+            <a href="single.php?post=<?php echo $row['id']; ?>" class="btn btn-primary">Read More</a>
+    </div>
 <?php
     }
 } else {
